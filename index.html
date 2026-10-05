@@ -99,7 +99,7 @@
     <div class="comanda-bar-left">
       <div class="comanda-badge-count" id="comanda-badge-count">0</div>
       <div class="comanda-bar-info">
-        <span class="comanda-bar-title">Ver Mi Comanda</span>
+        <span class="comanda-bar-title">Ver Mi Pedido</span>
         <span class="comanda-bar-subtitle" id="comanda-bar-subtitle">📍 Mesa 01 • 0 platillos</span>
       </div>
     </div>
@@ -116,10 +116,10 @@
     <div class="comanda-drawer">
       <header class="drawer-header">
         <div class="drawer-title-group">
-          <h2 class="drawer-title">Comanda de la Mesa</h2>
+          <h2 class="drawer-title">Tu Pedido</h2>
           <span class="drawer-table-tag" id="drawer-table-tag">📍 Mesa 01</span>
         </div>
-        <button type="button" class="btn-close-drawer" id="btn-close-drawer" title="Cerrar comanda">✕</button>
+        <button type="button" class="btn-close-drawer" id="btn-close-drawer" title="Cerrar pedido">✕</button>
       </header>
 
       <div class="drawer-body">
@@ -171,7 +171,7 @@
           <span>🍽️ Enviar Pedido a Cocina</span>
         </button>
         <button type="button" class="btn-whatsapp-action" id="btn-submit-whatsapp">
-          <span>📲 Enviar Comanda por WhatsApp</span>
+          <span>📲 Enviar Pedido por WhatsApp</span>
         </button>
       </footer>
     </div>
@@ -204,15 +204,15 @@
         </div>
       </div>
 
-      <!-- Footer con Stepper y Botón Confirmar -->
-      <footer class="sheet-footer">
-        <div class="sheet-stepper">
-          <button type="button" class="sheet-stepper-btn" id="sheet-qty-minus">−</button>
-          <span class="sheet-stepper-val" id="sheet-qty-val">1</span>
-          <button type="button" class="sheet-stepper-btn" id="sheet-qty-plus">+</button>
+      <!-- Footer Fijo con Stepper y Botón Confirmar -->
+      <footer class="sheet-sticky-footer" id="sheet-footer">
+        <div class="sheet-qty-stepper">
+          <button type="button" class="sheet-qty-btn" id="sheet-qty-minus">−</button>
+          <span class="sheet-qty-val" id="sheet-qty-val">1</span>
+          <button type="button" class="sheet-qty-btn" id="sheet-qty-plus">+</button>
         </div>
         <button type="button" class="btn-confirm-dish" id="btn-confirm-dish">
-          <span id="btn-confirm-dish-text">Agregar a la Comanda • $0.00</span>
+          <span id="btn-confirm-dish-text">Agregar a la Orden • $0.00</span>
         </button>
       </footer>
     </div>
@@ -267,7 +267,7 @@
     <div class="comanda-drawer" style="max-width: 480px; margin: auto; border-radius: var(--radius-lg); transform: translateY(0);">
       <div class="order-success-screen">
         <div class="success-check-icon">✓</div>
-        <h2 class="success-title">¡Comanda Enviada!</h2>
+        <h2 class="success-title">¡Pedido Enviado a Cocina!</h2>
         <span class="success-folio" id="success-order-folio">#M01-0000</span>
         <p class="success-message">
           Tu orden ha sido registrada en el sistema de cocina para la <strong>Mesa <span id="success-order-mesa">01</span></strong>. Nuestro equipo comenzará su preparación de inmediato.

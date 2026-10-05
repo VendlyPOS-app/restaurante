@@ -302,7 +302,7 @@ const App = (() => {
             ? `<button type="button" class="btn-dish-action btn-customize" data-action="customize">
                  <span>⚙️ Personalizar</span>
                </button>`
-            : `<button type="button" class="btn-dish-action btn-direct-add" data-action="add" title="Agregar a la comanda">
+            : `<button type="button" class="btn-dish-action btn-direct-add" data-action="add" title="Agregar a la orden">
                  <span>+ Agregar</span>
                </button>`;
 

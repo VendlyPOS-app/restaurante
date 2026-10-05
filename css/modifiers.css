@@ -137,6 +137,7 @@
   padding: 18px 20px;
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -349,16 +350,21 @@
 }
 
 /* Footer Fijo con Cálculo Dinámico del Precio */
-.sheet-sticky-footer {
+.sheet-sticky-footer,
+.sheet-footer {
   padding: 16px 20px;
   background-color: var(--bg-card);
   border-top: 1px solid var(--accent-border);
   display: flex;
   align-items: center;
   gap: 14px;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.sheet-qty-stepper {
+.sheet-qty-stepper,
+.sheet-stepper {
   display: flex;
   align-items: center;
   background: var(--bg-surface);
@@ -366,11 +372,14 @@
   border-radius: var(--radius-full);
   height: 48px;
   padding: 0 4px;
+  flex-shrink: 0;
 }
 
-.sheet-qty-btn {
-  background: transparent;
-  border: none;
+.sheet-qty-btn,
+.sheet-stepper-btn {
+  background: transparent !important;
+  border: none !important;
+  outline: none;
   color: var(--text-primary);
   width: 38px;
   height: 38px;
@@ -380,19 +389,27 @@
   justify-content: center;
   cursor: pointer;
   border-radius: 50%;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
+  line-height: 1;
+  padding: 0;
 }
 
-.sheet-qty-btn:hover {
-  background: var(--accent-soft);
+.sheet-qty-btn:hover,
+.sheet-stepper-btn:hover {
+  background: var(--accent-soft) !important;
   color: var(--accent-gold);
 }
 
-.sheet-qty-val {
+.sheet-qty-val,
+.sheet-stepper-val {
   padding: 0 12px;
   font-weight: 800;
   font-size: 1.05rem;
   color: #ffffff;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
+  user-select: none;
 }
 
 .btn-confirm-dish {

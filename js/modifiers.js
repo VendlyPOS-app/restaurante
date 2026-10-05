@@ -242,7 +242,7 @@ const Modifiers = (() => {
 
     if (confirmBtnText) {
       if (isValid) {
-        confirmBtnText.textContent = `Agregar a la Comanda • ${sym}${totalPrice.toFixed(2)}`;
+        confirmBtnText.textContent = `Agregar a la Orden • ${sym}${totalPrice.toFixed(2)}`;
       } else {
         confirmBtnText.textContent = `Completa las selecciones obligatorias`;
       }

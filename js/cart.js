@@ -250,7 +250,7 @@ const Cart = (() => {
     if (items.length === 0) {
       drawerItemsContainer.innerHTML = `
         <div style="text-align: center; color: var(--text-muted); padding: 40px 20px;">
-          <p style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Tu comanda está vacía</p>
+          <p style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Tu orden está vacía</p>
           <p style="font-size: 0.85rem;">Explora el menú y agrega tus platillos favoritos.</p>
         </div>
       `;
@@ -380,7 +380,7 @@ const Cart = (() => {
         closeDrawer();
         showSuccessModal(res.order_code, mesa);
       } else {
-        alert('Hubo un inconveniente al registrar la comanda. Por favor consulta con tu mesero.');
+        alert('Hubo un inconveniente al registrar el pedido. Por favor consulta con tu mesero.');
       }
     } catch (e) {
       console.error('[Cart] Error enviando pedido:', e);
@@ -406,7 +406,7 @@ const Cart = (() => {
     const mesa = window.VendlyStore?.tableNumber || 'Mesa no asignada';
     const sym = window.VendlyStore?.currencySymbol || '$';
 
-    let text = `🍽️ *NUEVA COMANDA — ${storeName.toUpperCase()}*\n`;
+    let text = `🍽️ *NUEVA ORDEN — ${storeName.toUpperCase()}*\n`;
     text += `📍 *Ubicación:* Mesa ${mesa}\n`;
     if (customerNameInput && customerNameInput.value.trim()) {
       text += `👤 *Cliente:* ${customerNameInput.value.trim()}\n`;
