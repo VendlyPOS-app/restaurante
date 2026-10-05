@@ -1,0 +1,6 @@
+# ==============================================================================
+# Reglas de Enrutamiento SPA para Cloudflare Pages (menu.vendlypos.shop)
+# ==============================================================================
+
+# Redirección limpia SPA para rutas virtuales y parámetros sin bucles
+/*    /index.html   200

@@ -1,0 +1,53 @@
+# ==============================================================================
+# Reglas de Cabeceras HTTP para Cloudflare Pages (menu.vendlypos.shop)
+# ==============================================================================
+
+# Reglas globales de seguridad y CORS para todo el sitio
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization
+
+# Documento HTML principal: revalidación inmediata para entrega instantánea de actualizaciones
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Datos demo offline
+/demo/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Archivos de código (CSS y JS): 1 día con stale-while-revalidate para Edge CDN
+/css/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/js/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Activos estáticos multimedia e imágenes: caché inmutable
+/*.webp
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.png
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.jpeg
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.ico
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable

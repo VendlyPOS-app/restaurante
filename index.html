@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#120700" />
+  <meta name="description" content="Menú digital gastronómico interactivo con comanda directa a cocina para restaurantes de alto nivel. Potenciado por VendlyPOS." />
+  <title>Menú Digital & Comanda | VendlyPOS</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Menú Digital & Comanda | VendlyPOS" />
+  <meta property="og:description" content="Explora nuestra carta gastronómica de autor, personaliza tus platillos y comanda directamente desde tu mesa." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-vendlypos.svg" />
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/modifiers.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- =========================================================================
+         Hero Header Inmersivo del Restaurante
+         ========================================================================= -->
+    <header class="hero-header" id="hero-header">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-top-row">
+          <div class="brand-badge">
+            <img class="brand-logo-img" src="assets/img/logo-vendlypos.svg" alt="VendlyPOS" />
+            <span class="brand-badge-text">VENDLYPOS GOURMET</span>
+          </div>
+
+          <!-- Píldora de Mesa Asignada (Clic abre selector) -->
+          <button type="button" class="table-pill" id="header-table-pill" title="Cambiar mesa asignada">
+            <span class="table-pill-dot"></span>
+            <span class="table-pill-text" id="table-pill-number">Mesa 01</span>
+            <span class="table-pill-edit">Cambiar</span>
+          </button>
+        </div>
+
+        <h1 class="restaurant-title" id="restaurant-title">Cargando restaurante...</h1>
+        <p class="restaurant-tagline" id="restaurant-tagline">Cocina de autor y experiencias gastronómicas</p>
+
+        <div class="restaurant-meta-row">
+          <span class="meta-pill open" id="restaurant-status">En Servicio</span>
+          <span class="meta-pill" id="restaurant-schedule">Abierto de 12:00 PM a 10:30 PM</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- =========================================================================
+         Barra de Búsqueda Culinaria en Vivo
+         ========================================================================= -->
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="menu-search-input" placeholder="Buscar cortes, hamburguesas, bebidas, postres..." autocomplete="off" />
+        <button type="button" class="search-clear-btn" id="search-clear-btn" title="Limpiar búsqueda">✕</button>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         Barra Adhesiva de Categorías (Course Tabs)
+         ========================================================================= -->
+    <nav class="sticky-tabs-container">
+      <div class="categories-scroll" id="categories-scroll">
+        <!-- Renderizado dinámicamente por app.js -->
+        <button type="button" class="category-tab-btn active"><span>✨</span><span>Todos</span></button>
+      </div>
+    </nav>
+
+    <!-- =========================================================================
+         Catálogo de Platillos Gastronómicos
+         ========================================================================= -->
+    <main class="menu-content" id="menu-content">
+      <!-- Los skeletons o platillos se inyectan dinámicamente -->
+    </main>
+
+  </div><!-- Fin .app-container -->
+
+  <!-- ===========================================================================
+       Barra Flotante Persistente de Comanda (Floating Bar)
+       =========================================================================== -->
+  <aside class="floating-comanda-bar" id="floating-comanda-bar">
+    <div class="comanda-bar-left">
+      <div class="comanda-badge-count" id="comanda-badge-count">0</div>
+      <div class="comanda-bar-info">
+        <span class="comanda-bar-title">Ver Mi Comanda</span>
+        <span class="comanda-bar-subtitle" id="comanda-bar-subtitle">📍 Mesa 01 • 0 platillos</span>
+      </div>
+    </div>
+    <div class="comanda-bar-right">
+      <span class="comanda-bar-total" id="comanda-bar-total">$0.00</span>
+      <div class="comanda-bar-arrow">➜</div>
+    </div>
+  </aside>
+
+  <!-- ===========================================================================
+       Drawer Modal de Comanda Activa
+       =========================================================================== -->
+  <div class="drawer-overlay" id="drawer-overlay">
+    <div class="comanda-drawer">
+      <header class="drawer-header">
+        <div class="drawer-title-group">
+          <h2 class="drawer-title">Comanda de la Mesa</h2>
+          <span class="drawer-table-tag" id="drawer-table-tag">📍 Mesa 01</span>
+        </div>
+        <button type="button" class="btn-close-drawer" id="btn-close-drawer" title="Cerrar comanda">✕</button>
+      </header>
+
+      <div class="drawer-body">
+        <!-- Contenedor dinámico de líneas de pedido -->
+        <div id="drawer-items-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+
+        <!-- Datos del Comensal e Instrucciones a Cocina -->
+        <div class="drawer-extra-section">
+          <label class="extra-label" for="drawer-customer-name">Nombre de Comensal (Opcional)</label>
+          <input type="text" class="form-input" id="drawer-customer-name" placeholder="Ej. Walter Morales" />
+
+          <label class="extra-label" for="drawer-table-notes" style="margin-top: 8px;">Notas Especiales para Cocina</label>
+          <input type="text" class="form-input" id="drawer-table-notes" placeholder="Ej. Servir todo junto, sin cubiertos plásticos..." />
+        </div>
+
+        <!-- Propina Sugerida -->
+        <div class="drawer-extra-section">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="extra-label">Propina Sugerida para el Personal</label>
+          </div>
+          <div class="tips-grid">
+            <button type="button" class="tip-btn" data-tip="0">0%</button>
+            <button type="button" class="tip-btn" data-tip="5">5%</button>
+            <button type="button" class="tip-btn active" data-tip="10">10%</button>
+            <button type="button" class="tip-btn" data-tip="15">15%</button>
+          </div>
+        </div>
+
+        <!-- Desglose de Totales -->
+        <div class="comanda-totals">
+          <div class="total-row">
+            <span>Subtotal de platillos:</span>
+            <span id="drawer-subtotal">$0.00</span>
+          </div>
+          <div class="total-row">
+            <span>Propina de servicio:</span>
+            <span id="drawer-tip">$0.00</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total Estimado:</span>
+            <span class="val" id="drawer-total">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones de Despacho -->
+      <footer class="drawer-footer">
+        <button type="button" class="btn-primary-action" id="btn-submit-kitchen">
+          <span>🍽️ Enviar Pedido a Cocina</span>
+        </button>
+        <button type="button" class="btn-whatsapp-action" id="btn-submit-whatsapp">
+          <span>📲 Enviar Comanda por WhatsApp</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ===========================================================================
+       Bottom Sheet Interactivo de Modificadores de Platillo
+       =========================================================================== -->
+  <div class="modifiers-overlay" id="modifiers-overlay">
+    <div class="modifiers-sheet" id="modifiers-sheet">
+      <!-- Encabezado del Platillo Seleccionado -->
+      <header class="sheet-hero-header">
+        <img class="sheet-dish-thumb" id="sheet-dish-thumb" src="assets/img/placeholder-dish.svg" alt="Platillo" />
+        <div class="sheet-hero-info">
+          <span class="sheet-dish-category" id="sheet-dish-category">Especialidad</span>
+          <h2 class="sheet-dish-title" id="sheet-dish-title">Personalizar Platillo</h2>
+          <span class="sheet-dish-base-price" id="sheet-dish-base-price">$0.00</span>
+        </div>
+        <button type="button" class="btn-close-sheet" id="btn-close-modifiers" title="Cerrar personalización">✕</button>
+      </header>
+
+      <!-- Scroll de Grupos y Opciones -->
+      <div class="sheet-scroll-body">
+        <div id="sheet-groups-container" style="display: flex; flex-direction: column; gap: 16px;"></div>
+
+        <!-- Instrucciones especiales del platillo -->
+        <div class="sheet-notes-section">
+          <label class="sheet-notes-label" for="sheet-notes-input">Indicaciones para el Chef (Opcional)</label>
+          <textarea class="sheet-notes-textarea" id="sheet-notes-input" placeholder="Ej. Aderezo aparte, bien caliente, sin cebolla..."></textarea>
+        </div>
+      </div>
+
+      <!-- Footer con Stepper y Botón Confirmar -->
+      <footer class="sheet-footer">
+        <div class="sheet-stepper">
+          <button type="button" class="sheet-stepper-btn" id="sheet-qty-minus">−</button>
+          <span class="sheet-stepper-val" id="sheet-qty-val">1</span>
+          <button type="button" class="sheet-stepper-btn" id="sheet-qty-plus">+</button>
+        </div>
+        <button type="button" class="btn-confirm-dish" id="btn-confirm-dish">
+          <span id="btn-confirm-dish-text">Agregar a la Comanda • $0.00</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ===========================================================================
+       Modal de Selección Manual de Mesa
+       =========================================================================== -->
+  <div class="drawer-overlay" id="table-modal-overlay">
+    <div class="modal-table-selector">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="font-family: var(--font-serif); font-size: 1.35rem; color: #ffffff;">¿En qué mesa te encuentras?</h2>
+        <button type="button" class="btn-close-drawer" id="btn-close-table-modal">✕</button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">
+        Elige tu número de mesa para asegurar que los platillos lleguen directamente a tu lugar.
+      </p>
+
+      <!-- Acceso Rápido Mesas 1 a 12 -->
+      <div class="quick-tables-grid">
+        <button type="button" class="quick-table-btn" data-table="01">Mesa 01</button>
+        <button type="button" class="quick-table-btn" data-table="02">Mesa 02</button>
+        <button type="button" class="quick-table-btn" data-table="03">Mesa 03</button>
+        <button type="button" class="quick-table-btn" data-table="04">Mesa 04</button>
+        <button type="button" class="quick-table-btn" data-table="05">Mesa 05</button>
+        <button type="button" class="quick-table-btn" data-table="06">Mesa 06</button>
+        <button type="button" class="quick-table-btn" data-table="07">Mesa 07</button>
+        <button type="button" class="quick-table-btn" data-table="08">Mesa 08</button>
+        <button type="button" class="quick-table-btn" data-table="09">Mesa 09</button>
+        <button type="button" class="quick-table-btn" data-table="10">Mesa 10</button>
+        <button type="button" class="quick-table-btn" data-table="11">Mesa 11</button>
+        <button type="button" class="quick-table-btn" data-table="12">Mesa 12</button>
+      </div>
+
+      <!-- Opción de mesa personalizada / terraza / barra -->
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+        <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Otra ubicación o número de mesa:</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="form-input" id="custom-table-input" placeholder="Ej. Terraza 02 o Barra" />
+          <button type="button" class="btn-dish-action btn-direct-add" id="btn-confirm-custom-table" style="white-space: nowrap;">
+            Establecer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===========================================================================
+       Modal de Éxito / Confirmación de Pedido
+       =========================================================================== -->
+  <div class="drawer-overlay" id="order-success-modal" style="display: none;">
+    <div class="comanda-drawer" style="max-width: 480px; margin: auto; border-radius: var(--radius-lg); transform: translateY(0);">
+      <div class="order-success-screen">
+        <div class="success-check-icon">✓</div>
+        <h2 class="success-title">¡Comanda Enviada!</h2>
+        <span class="success-folio" id="success-order-folio">#M01-0000</span>
+        <p class="success-message">
+          Tu orden ha sido registrada en el sistema de cocina para la <strong>Mesa <span id="success-order-mesa">01</span></strong>. Nuestro equipo comenzará su preparación de inmediato.
+        </p>
+        <button type="button" class="btn-primary-action" id="btn-success-modal-ok" style="max-width: 240px; margin-top: 10px;">
+          Entendido, ¡gracias!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===========================================================================
+       Scripts del Menú Digital Gastronómico
+       =========================================================================== -->
+  <script src="js/relay.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/modifiers.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

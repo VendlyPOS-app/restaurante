@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" width="160" height="40" fill="none">
+  <defs>
+    <linearGradient id="vLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="vBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D1500" />
+      <stop offset="100%" stop-color="#1A0A00" />
+    </linearGradient>
+  </defs>
+  <!-- Icon container -->
+  <rect x="2" y="4" width="32" height="32" rx="10" fill="url(#vBgGrad)" stroke="#F59E0B" stroke-width="1.5" />
+  <!-- Restaurant / POS Icon -->
+  <path d="M12 12h12v9a6 6 0 0 1-12 0v-9z" stroke="url(#vLogoGrad)" stroke-width="2" stroke-linejoin="round" />
+  <path d="M18 21v7m-4 0h8" stroke="url(#vLogoGrad)" stroke-width="2" stroke-linecap="round" />
+  <!-- Brand text -->
+  <text x="44" y="24" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif" font-size="17" font-weight="800" fill="#FFFFFF" letter-spacing="-0.3">Vendly<tspan fill="#F59E0B">POS</tspan></text>
+  <text x="44" y="33" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif" font-size="8" font-weight="600" fill="#9CA3AF" letter-spacing="1.5">RESTAURANTE</text>
+</svg>

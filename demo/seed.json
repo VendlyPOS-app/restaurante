@@ -1,0 +1,307 @@
+{
+  "store": {
+    "id": "rincon-sabor",
+    "store_id": "rincon-sabor",
+    "businessName": "El Rincón del Sabor",
+    "businessType": "restaurant",
+    "tagline": "Cocina de autor, cortes premium y mixología artesanal",
+    "phone": "+503 7890-1234",
+    "whatsappNumber": "50378901234",
+    "address": "Av. Las Magnolias #124, Col. San Benito, San Salvador",
+    "schedule": "Martes a Domingo: 12:00 PM – 10:30 PM",
+    "footer": "¡Gracias por visitarnos! Disfruta tu experiencia culinaria.",
+    "currencySymbol": "$",
+    "allowDineIn": true,
+    "allowDelivery": true,
+    "allowPickup": true,
+    "bannerUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80",
+    "logoUrl": "assets/img/logo-vendlypos.svg"
+  },
+  "categories": [
+    "Todos",
+    "Comida Rápida",
+    "Especialidades",
+    "Bebidas Calientes",
+    "Bebidas Frías",
+    "Postres"
+  ],
+  "products": [
+    {
+      "id": 101,
+      "sku": "101",
+      "name": "Hamburguesa Clásica con Queso Cheddar",
+      "category": "Comida Rápida",
+      "description": "Pan brioche tostado con mantequilla, 150g de carne angus certificada, doble queso cheddar fundido, lechuga romana, tomate y aderezo especial de la casa.",
+      "price": 6.50,
+      "stock": 45,
+      "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "badge": "Más Pedido",
+      "modifier_groups": [
+        {
+          "id": 1,
+          "title": "Término de la Carne",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 11, "name": "Término Medio (Jugoso al centro)", "additional_price": 0.00 },
+            { "id": 12, "name": "Tres Cuartos (Poco rosado)", "additional_price": 0.00 },
+            { "id": 13, "name": "Bien Cocido (Sellado total)", "additional_price": 0.00 }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Tipo de Pan",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 21, "name": "Pan Brioche Clásico", "additional_price": 0.00 },
+            { "id": 22, "name": "Pan de Papa Artesanal", "additional_price": 0.50 },
+            { "id": 23, "name": "Pan sin Gluten", "additional_price": 1.00 }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Ingredientes Extras y Adicionales",
+          "category": "Cocina",
+          "min_selectable": 0,
+          "max_selectable": 4,
+          "options": [
+            { "id": 31, "name": "Queso Cheddar Extra", "additional_price": 0.75 },
+            { "id": 32, "name": "Bacon Ahumado Crujiente", "additional_price": 1.00 },
+            { "id": 33, "name": "Huevo Estrellado", "additional_price": 0.85 },
+            { "id": 34, "name": "Cebolla Caramelizada", "additional_price": 0.60 },
+            { "id": 35, "name": "Guacamole Fresco", "additional_price": 1.25 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "sku": "102",
+      "name": "Combo Hamburguesa + Papas Fritas",
+      "category": "Comida Rápida",
+      "description": "Hamburguesa con queso artesanal servida con porción generosa de papas crujientes corte grueso sazonadas y aderezo.",
+      "price": 8.50,
+      "stock": 30,
+      "image_url": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "badge": "Popular",
+      "modifier_groups": [
+        {
+          "id": 1,
+          "title": "Término de la Carne",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 11, "name": "Término Medio", "additional_price": 0.00 },
+            { "id": 12, "name": "Tres Cuartos", "additional_price": 0.00 },
+            { "id": 13, "name": "Bien Cocido", "additional_price": 0.00 }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "Estilo de Papas Fritas",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 41, "name": "Papas Tradicionales Sal Marina", "additional_price": 0.00 },
+            { "id": 42, "name": "Papas Especiadas Cajún", "additional_price": 0.50 },
+            { "id": 43, "name": "Papas Trufadas con Parmesano", "additional_price": 1.50 }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Adicionales Gourmet",
+          "category": "Cocina",
+          "min_selectable": 0,
+          "max_selectable": 3,
+          "options": [
+            { "id": 31, "name": "Queso Cheddar Extra", "additional_price": 0.75 },
+            { "id": 32, "name": "Bacon Ahumado Crujiente", "additional_price": 1.00 },
+            { "id": 35, "name": "Guacamole Fresco", "additional_price": 1.25 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "sku": "103",
+      "name": "Corte New York Steak 350g",
+      "category": "Especialidades",
+      "description": "Jugoso corte de lomo ancho asado a la parrilla de carbón, bañado en mantequilla de hierbas finas y acompañado de vegetales glaseados.",
+      "price": 16.50,
+      "stock": 18,
+      "image_url": "https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "badge": "Chef Choice",
+      "modifier_groups": [
+        {
+          "id": 5,
+          "title": "Término del Corte",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 51, "name": "Rojo Inglés / Blue", "additional_price": 0.00 },
+            { "id": 52, "name": "Término Medio (Recomendado)", "additional_price": 0.00 },
+            { "id": 53, "name": "Tres Cuartos", "additional_price": 0.00 },
+            { "id": 54, "name": "Bien Cocido", "additional_price": 0.00 }
+          ]
+        },
+        {
+          "id": 6,
+          "title": "Guarnición Principal",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 61, "name": "Puré de Papa Rústico con Ajo Rostizado", "additional_price": 0.00 },
+            { "id": 62, "name": "Papas Rústicas al Romero", "additional_price": 0.00 },
+            { "id": 63, "name": "Ensalada Verde de la Huerta", "additional_price": 0.00 }
+          ]
+        },
+        {
+          "id": 7,
+          "title": "Salsa de Acompañamiento",
+          "category": "Cocina",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 71, "name": "Salsa Chimichurri Argentino Casero", "additional_price": 0.00 },
+            { "id": 72, "name": "Salsa de Pimienta Verde al Coñac", "additional_price": 0.75 },
+            { "id": 73, "name": "Mantequilla de Ajo y Romero", "additional_price": 0.50 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "sku": "104",
+      "name": "Pizza Margarita Artesanal en Horno de Piedra",
+      "category": "Especialidades",
+      "description": "Masa madre madurada 48 horas, salsa pomodoro de tomates San Marzano, mozzarella fior di latte, albahaca fresca y aceite de oliva virgen extra.",
+      "price": 10.50,
+      "stock": 25,
+      "image_url": "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "modifier_groups": [
+        {
+          "id": 8,
+          "title": "Toppings Adicionales",
+          "category": "Cocina",
+          "min_selectable": 0,
+          "max_selectable": 4,
+          "options": [
+            { "id": 81, "name": "Prosciutto di Parma", "additional_price": 2.50 },
+            { "id": 82, "name": "Champiñones Salteados", "additional_price": 1.25 },
+            { "id": 83, "name": "Aceitunas Kalamata", "additional_price": 1.00 },
+            { "id": 84, "name": "Parmesano Reggiano en Lascas", "additional_price": 1.50 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "sku": "105",
+      "name": "Capuchino Artesanal 12oz",
+      "category": "Bebidas Calientes",
+      "description": "Espresso doble de altura con leche texturizada al vapor y capa aterciopelada de microespuma, coronado con fino polvo de cacao.",
+      "price": 3.25,
+      "stock": 80,
+      "image_url": "https://images.unsplash.com/photo-1534778101976-62847782c213?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "badge": "Barista",
+      "modifier_groups": [
+        {
+          "id": 9,
+          "title": "Tipo de Leche",
+          "category": "Barra",
+          "min_selectable": 1,
+          "max_selectable": 1,
+          "options": [
+            { "id": 91, "name": "Leche Entera Cremosa", "additional_price": 0.00 },
+            { "id": 92, "name": "Leche Deslactosada", "additional_price": 0.35 },
+            { "id": 93, "name": "Leche de Almendras", "additional_price": 0.60 },
+            { "id": 94, "name": "Leche de Avena Barista", "additional_price": 0.65 }
+          ]
+        },
+        {
+          "id": 10,
+          "title": "Jarabe y Toque Dulce",
+          "category": "Barra",
+          "min_selectable": 0,
+          "max_selectable": 2,
+          "options": [
+            { "id": 1001, "name": "Shot Vainilla Francesa", "additional_price": 0.50 },
+            { "id": 1002, "name": "Shot Caramelo Salado", "additional_price": 0.50 },
+            { "id": 1003, "name": "Shot Avellana Tostada", "additional_price": 0.50 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "sku": "106",
+      "name": "Café Americano Intenso 12oz",
+      "category": "Bebidas Calientes",
+      "description": "Extracción limpia de café arábica estrictamente de altura con agua purificada caliente, notas a chocolate amargo y avellana.",
+      "price": 2.25,
+      "stock": 100,
+      "image_url": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "modifier_groups": [
+        {
+          "id": 11,
+          "title": "Intensidad y Endulzante",
+          "category": "Barra",
+          "min_selectable": 0,
+          "max_selectable": 2,
+          "options": [
+            { "id": 1101, "name": "Shot Extra de Espresso", "additional_price": 0.75 },
+            { "id": 1102, "name": "Azúcar Morena", "additional_price": 0.00 },
+            { "id": 1103, "name": "Endulzante sin Calorías", "additional_price": 0.00 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "sku": "107",
+      "name": "Limonada de Menta y Hierbabuena Frozen",
+      "category": "Bebidas Frías",
+      "description": "Zumo fresco de limones persas frappeado con hojas de hierbabuena fresca de huerto y toque justo de almíbar natural.",
+      "price": 3.00,
+      "stock": 60,
+      "image_url": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "badge": "Refrescante",
+      "modifier_groups": []
+    },
+    {
+      "id": 108,
+      "sku": "108",
+      "name": "Volcán de Chocolate Belga Fondant",
+      "category": "Postres",
+      "description": "Bizcocho tibio de chocolate 70% cacao con centro líquido fundente, servido con helado de vainilla bourbon y frutos del bosque.",
+      "price": 5.50,
+      "stock": 20,
+      "image_url": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80",
+      "is_active": true,
+      "is_sold_out": false,
+      "badge": "Especialidad",
+      "modifier_groups": []
+    }
+  ]
+}
