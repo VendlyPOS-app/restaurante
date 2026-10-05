@@ -19,9 +19,6 @@
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
 
-# Datos demo offline
-/demo/*
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 # Archivos de código (CSS y JS): 1 día con stale-while-revalidate para Edge CDN
 /css/*

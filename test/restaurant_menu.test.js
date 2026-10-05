@@ -8,8 +8,8 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 
-// Cargar y validar seed.json
-const seedRaw = fs.readFileSync(path.join(__dirname, '../demo/seed.json'), 'utf8');
+// Cargar y validar datos de prueba
+const seedRaw = fs.readFileSync(path.join(__dirname, 'test_data.json'), 'utf8');
 const seedData = JSON.parse(seedRaw);
 
 console.log('--- INICIANDO TEST SUITE DEL MENÚ GASTRONÓMICO VENDLYPOS ---');

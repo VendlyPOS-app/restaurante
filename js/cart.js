@@ -356,7 +356,7 @@ const Cart = (() => {
     }
 
     const payload = {
-      store_id: window.VendlyStore?.id || 'rincon-sabor',
+      store_id: window.VendlyStore?.id || '',
       table_number: mesa,
       customer_name: customer || `Comensal Mesa ${mesa}`,
       notes: tableNotes,

@@ -37,7 +37,7 @@ const App = (() => {
    */
   function parseUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    const storeId = params.get('tienda') || params.get('store') || params.get('tienda_id') || 'rincon-sabor';
+    const storeId = params.get('tienda') || params.get('store') || params.get('tienda_id') || '';
     const tableParam = params.get('mesa') || params.get('table') || params.get('m') || '01';
 
     return {
@@ -72,12 +72,49 @@ const App = (() => {
     renderHeaderTablePill(tableNumber);
     renderSkeletons();
 
+    // Si no se proporcionó identificador de tienda en la URL, mostrar pantalla limpia de bienvenida
+    if (!storeId) {
+      if (restaurantNameEl) restaurantNameEl.textContent = 'Menú Digital';
+      if (restaurantTaglineEl) {
+        restaurantTaglineEl.textContent = 'Escanea el código QR de tu mesa para ver la carta';
+        restaurantTaglineEl.style.display = '';
+      }
+      if (restaurantScheduleEl) restaurantScheduleEl.style.display = 'none';
+      if (restaurantStatusEl) restaurantStatusEl.style.display = 'none';
+      if (menuContentEl) {
+        menuContentEl.innerHTML = `
+          <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+            <div style="font-size: 3rem; margin-bottom: 16px;">📱</div>
+            <h3 style="color: var(--text-primary); font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 8px;">
+              Bienvenido al Menú Digital
+            </h3>
+            <p style="font-size: 0.95rem; max-width: 440px; margin: 0 auto; line-height: 1.5;">
+              Por favor escanea el código QR asignado a tu mesa para consultar los platillos disponibles y ordenar directamente.
+            </p>
+          </div>
+        `;
+      }
+      return;
+    }
+
     try {
       // 1. Cargar datos de la tienda y del catálogo en paralelo
       const [store, menu] = await Promise.all([
         Relay.fetchStore(storeId),
         Relay.fetchMenu(storeId)
       ]);
+
+      if (!store) {
+        if (restaurantNameEl) restaurantNameEl.textContent = 'Restaurante no disponible';
+        if (restaurantTaglineEl) {
+          restaurantTaglineEl.textContent = 'El establecimiento solicitado no se encuentra activo o no existe.';
+          restaurantTaglineEl.style.display = '';
+        }
+        if (restaurantScheduleEl) restaurantScheduleEl.style.display = 'none';
+        if (restaurantStatusEl) restaurantStatusEl.style.display = 'none';
+        showErrorMessage('No fue posible cargar el menú gastronómico. Por favor verifica el enlace o consulta con tu mesero.');
+        return;
+      }
 
       storeData = store;
       allProducts = menu.products || [];
@@ -91,6 +128,25 @@ const App = (() => {
 
       // 2. Renderizar UI
       renderStoreHeader();
+
+      if (allProducts.length === 0) {
+        if (categoriesScrollEl) categoriesScrollEl.innerHTML = '';
+        if (menuContentEl) {
+          menuContentEl.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+              <div style="font-size: 3rem; margin-bottom: 16px;">🍽️</div>
+              <h3 style="color: var(--text-primary); font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 8px;">
+                Menú en preparación
+              </h3>
+              <p style="font-size: 0.95rem; max-width: 440px; margin: 0 auto; line-height: 1.5;">
+                Este restaurante aún no cuenta con platillos publicados en su carta digital.
+              </p>
+            </div>
+          `;
+        }
+        return;
+      }
+
       renderCategoryTabs();
       renderProductsGrid();
 
@@ -113,23 +169,41 @@ const App = (() => {
   function renderStoreHeader() {
     if (!storeData) return;
 
-    if (restaurantNameEl) restaurantNameEl.textContent = storeData.businessName;
+    if (restaurantNameEl) {
+      restaurantNameEl.textContent = storeData.businessName || 'Menú Digital';
+    }
     if (restaurantTaglineEl) {
-      restaurantTaglineEl.textContent = storeData.tagline || 'Experiencia culinaria de alta calidad';
+      if (storeData.tagline) {
+        restaurantTaglineEl.textContent = storeData.tagline;
+        restaurantTaglineEl.style.display = '';
+      } else {
+        restaurantTaglineEl.textContent = '';
+        restaurantTaglineEl.style.display = 'none';
+      }
     }
 
     if (restaurantScheduleEl) {
-      restaurantScheduleEl.textContent = storeData.schedule || 'Abierto de 11:30 AM a 10:00 PM';
+      if (storeData.schedule) {
+        restaurantScheduleEl.textContent = storeData.schedule;
+        restaurantScheduleEl.style.display = '';
+      } else {
+        restaurantScheduleEl.style.display = 'none';
+      }
     }
 
     if (restaurantStatusEl) {
       restaurantStatusEl.textContent = 'En Servicio';
       restaurantStatusEl.classList.add('open');
+      restaurantStatusEl.style.display = '';
     }
 
-    // Fondo del hero banner
-    if (heroHeaderEl && storeData.bannerUrl) {
-      heroHeaderEl.style.backgroundImage = `url('${storeData.bannerUrl}')`;
+    // Fondo del hero banner si la tienda lo tiene configurado
+    if (heroHeaderEl) {
+      if (storeData.bannerUrl) {
+        heroHeaderEl.style.backgroundImage = `url('${storeData.bannerUrl}')`;
+      } else {
+        heroHeaderEl.style.backgroundImage = 'none';
+      }
     }
 
     renderHeaderTablePill(window.VendlyStore.tableNumber);
