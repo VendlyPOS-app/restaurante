@@ -207,7 +207,7 @@ const Modifiers = (() => {
         unit += parseFloat(opt.additional_price || 0.0);
       });
     });
-    return unit;
+    return Math.round(unit * 100) / 100;
   }
 
   /**

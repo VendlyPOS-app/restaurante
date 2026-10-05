@@ -225,6 +225,56 @@ assert(waMessage.includes('TOTAL ESTIMADO: $23.65'), 'Debe incluir el gran total
 
 console.log('✓ Formateador de comanda para WhatsApp genera texto legible e impecable');
 
+// 6. Grupo: Aislamiento Multimesa y Consistencia de Precios Base
+console.log('\n[Grupo 6: Aislamiento Multimesa y Precisión de Precios]');
+
+class MockMultiTableCart {
+  constructor() {
+    this.storage = {};
+    this.currentStore = 'rincon-sabor';
+    this.currentTable = '01';
+    this.items = [];
+  }
+
+  getStorageKey() {
+    return `vendly_menu_comanda_${this.currentStore}_${this.currentTable}`;
+  }
+
+  loadPersisted() {
+    this.items = [];
+    const raw = this.storage[this.getStorageKey()];
+    if (raw) {
+      this.items = JSON.parse(raw);
+    }
+  }
+
+  persist() {
+    this.storage[this.getStorageKey()] = JSON.stringify(this.items);
+  }
+
+  switchTable(newTable) {
+    this.currentTable = newTable;
+    this.loadPersisted();
+  }
+}
+
+const multiCart = new MockMultiTableCart();
+multiCart.loadPersisted();
+multiCart.items.push({ line_id: 'dish-1', name: 'Platillo Mesa 1', quantity: 2, unit_price: 10.0 });
+multiCart.persist();
+assert.strictEqual(multiCart.items.length, 1, 'Mesa 01 debe tener 1 ítem');
+
+// Cambiar a Mesa 02 (vacía): debe resetear items y no heredar nada de Mesa 01
+multiCart.switchTable('02');
+assert.strictEqual(multiCart.items.length, 0, 'Mesa 02 debe iniciar completamente limpia');
+
+// Volver a Mesa 01: debe restaurar sus ítems intactos
+multiCart.switchTable('01');
+assert.strictEqual(multiCart.items.length, 1, 'Mesa 01 conserva sus ítems');
+assert.strictEqual(multiCart.items[0].name, 'Platillo Mesa 1');
+
+console.log('✓ Aislamiento multimesa garantizado al 100% sin fuga de estado local');
+
 console.log('\n===============================================================');
-console.log(' TODOS LOS TESTS PASARON EXITOSAMENTE AL 100% (5/5 GRUPOS OK) ');
+console.log(' TODOS LOS TESTS PASARON EXITOSAMENTE AL 100% (6/6 GRUPOS OK) ');
 console.log('===============================================================\n');

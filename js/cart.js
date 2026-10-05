@@ -40,6 +40,7 @@ const Cart = (() => {
    * Carga la comanda persistida en localStorage
    */
   function loadPersisted() {
+    items = [];
     try {
       const raw = localStorage.getItem(getStorageKey());
       if (raw) {
@@ -76,11 +77,12 @@ const Cart = (() => {
   function addItem(dish, options = [], notes = '', qty = 1) {
     if (!dish) return;
 
-    // Calcular precio unitario
+    // Calcular precio unitario con redondeo a 2 decimales
     let unitPrice = parseFloat(dish.price || 0.0);
     options.forEach(opt => {
       unitPrice += parseFloat(opt.additional_price || 0.0);
     });
+    unitPrice = Math.round(unitPrice * 100) / 100;
 
     // Generar hash único para la línea de pedido
     const sortedOptionIds = options.map(o => o.id).sort().join('-');
@@ -148,16 +150,16 @@ const Cart = (() => {
    * Cálculos de totales
    */
   function getSubtotal() {
-    return items.reduce((sum, it) => sum + (it.unit_price * it.quantity), 0.0);
+    return Math.round(items.reduce((sum, it) => sum + (it.unit_price * it.quantity), 0.0) * 100) / 100;
   }
 
   function getTipAmount() {
     if (tipPercent <= 0) return 0.0;
-    return getSubtotal() * (tipPercent / 100);
+    return Math.round((getSubtotal() * (tipPercent / 100)) * 100) / 100;
   }
 
   function getTotal() {
-    return getSubtotal() + getTipAmount();
+    return Math.round((getSubtotal() + getTipAmount()) * 100) / 100;
   }
 
   function getTotalItemCount() {
@@ -244,8 +246,9 @@ const Cart = (() => {
     drawerItemsContainer.innerHTML = '';
 
     const sym = window.VendlyStore?.currencySymbol || '$';
-    const mesa = window.VendlyStore?.tableNumber || 'Mesa no asignada';
-    if (drawerTableTag) drawerTableTag.textContent = `📍 ${mesa}`;
+    const mesaRaw = window.VendlyStore?.tableNumber || 'Mesa no asignada';
+    const mesaClean = mesaRaw.toLowerCase().startsWith('mesa') ? mesaRaw : `Mesa ${mesaRaw}`;
+    if (drawerTableTag) drawerTableTag.textContent = `📍 ${mesaClean}`;
 
     if (items.length === 0) {
       drawerItemsContainer.innerHTML = `
@@ -360,13 +363,15 @@ const Cart = (() => {
       total_amount: getTotal(),
       items: items.map(it => ({
         id: it.dish_id,
+        dish_id: it.dish_id,
         sku: it.sku,
         name: it.name,
         category: it.category,
         quantity: it.quantity,
+        base_price: it.base_price,
         price: it.base_price,
-        unit_price: it.unit_price,
-        total: it.unit_price * it.quantity,
+        unit_price: it.base_price,
+        total: Math.round((it.unit_price * it.quantity) * 100) / 100,
         notes: it.notes,
         options: it.options
       }))
@@ -375,8 +380,10 @@ const Cart = (() => {
     try {
       const res = await Relay.submitOrder(payload);
       if (res && res.ok) {
-        // Limpiar comanda local
+        // Limpiar comanda local y notas del comensal
         clear();
+        if (customerNameInput) customerNameInput.value = '';
+        if (tableNotesInput) tableNotesInput.value = '';
         closeDrawer();
         showSuccessModal(res.order_code, mesa);
       } else {

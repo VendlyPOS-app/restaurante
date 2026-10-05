@@ -9,6 +9,7 @@ const App = (() => {
   let allCategories = [];
   let activeCategory = 'Todos';
   let searchTerm = '';
+  let scrollObserver = null;
 
   // Elementos DOM del Header
   const heroHeaderEl = document.getElementById('hero-header');
@@ -181,6 +182,12 @@ const App = (() => {
    * Maneja la selección de una pestaña de categoría
    */
   function selectCategory(cat) {
+    if (searchTerm.trim()) {
+      searchTerm = '';
+      if (searchInputEl) searchInputEl.value = '';
+      if (searchClearBtn) searchClearBtn.classList.remove('visible');
+      renderProductsGrid();
+    }
     activeCategory = cat;
 
     // Actualizar clase activa en botones
@@ -306,10 +313,12 @@ const App = (() => {
                  <span>+ Agregar</span>
                </button>`;
 
+        const imgSrc = (dish.image_url && dish.image_url.trim()) ? dish.image_url.trim() : 'assets/img/placeholder-dish.svg';
+
         card.innerHTML = `
           <div class="dish-img-wrap">
             ${badgeHtml}
-            <img class="dish-img" src="${dish.image_url}" alt="${escapeHtml(dish.name)}" loading="lazy" onerror="this.src='assets/img/placeholder-dish.svg'" />
+            <img class="dish-img" src="${imgSrc}" alt="${escapeHtml(dish.name)}" loading="lazy" onerror="this.src='assets/img/placeholder-dish.svg'" />
           </div>
           <div class="dish-details">
             <h3 class="dish-name">${escapeHtml(dish.name)}</h3>
@@ -362,6 +371,9 @@ const App = (() => {
 
       menuContentEl.appendChild(sectionEl);
     });
+
+    // Reactivar observador de scroll para las nuevas secciones
+    setupScrollSpy();
   }
 
   /**
@@ -396,10 +408,14 @@ const App = (() => {
    * Observador de intersección para iluminar las pestañas según la categoría en pantalla
    */
   function setupScrollSpy() {
+    if (scrollObserver) {
+      scrollObserver.disconnect();
+      scrollObserver = null;
+    }
     const sections = document.querySelectorAll('.category-section');
     if (!('IntersectionObserver' in window) || sections.length === 0) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const categoryName = entry.target.dataset.categoryName;
@@ -420,7 +436,7 @@ const App = (() => {
       threshold: 0
     });
 
-    sections.forEach(s => observer.observe(s));
+    sections.forEach(s => scrollObserver.observe(s));
   }
 
   /**
@@ -524,6 +540,17 @@ const App = (() => {
       btnConfirmCustomTable.addEventListener('click', () => {
         if (customTableInput && customTableInput.value.trim()) {
           setTableNumber(customTableInput.value.trim());
+        }
+      });
+    }
+
+    if (customTableInput) {
+      customTableInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (customTableInput.value.trim()) {
+            setTableNumber(customTableInput.value.trim());
+          }
         }
       });
     }

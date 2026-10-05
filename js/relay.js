@@ -101,7 +101,7 @@ const Relay = (() => {
             }
 
             return {
-              id: p.id || p.sku,
+              id: p.sku || p.id,
               sku: p.sku || p.id,
               name: p.name || 'Platillo',
               category: p.category || 'General',
@@ -110,7 +110,7 @@ const Relay = (() => {
               stock: parseInt(p.stock || 0, 10),
               image_url: p.image_url || p.imagePath || p.image || 'assets/img/placeholder-dish.svg',
               is_active: p.isActive !== false && p.is_active !== false,
-              is_sold_out: Boolean(p.is_sold_out || (p.stock !== undefined && p.stock <= 0)),
+              is_sold_out: p.is_sold_out !== undefined ? Boolean(p.is_sold_out) : Boolean(p.stock !== undefined && p.stock <= 0),
               badge: p.badge || p.web_badge || '',
               modifier_groups: modGroups
             };
