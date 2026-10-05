@@ -1,0 +1,6 @@
+# Entorno de compilacion y temporales de Cloudflare Wrangler
+.wrangler/
+node_modules/
+*.log
+.DS_Store
+Thumbs.db

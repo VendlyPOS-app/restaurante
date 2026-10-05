@@ -1,6 +1,7 @@
 # ==============================================================================
-# Reglas de Enrutamiento SPA para Cloudflare Pages (menu.vendlypos.shop)
+# Reglas de Enrutamiento para Cloudflare Pages / Workers Assets (menu.vendlypos.shop)
 # ==============================================================================
 
-# Redirección limpia SPA para rutas virtuales y parámetros sin bucles
-/*    /index.html   200
+# El enrutamiento SPA se gestiona de forma nativa a través de wrangler.jsonc
+# ("not_found_handling": "single-page-application").
+# No incluir "/* /index.html 200" para evitar bucles infinitos de redirección (code: 100324).
