@@ -84,12 +84,15 @@ const App = (() => {
       if (menuContentEl) {
         menuContentEl.innerHTML = `
           <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-            <div style="font-size: 3rem; margin-bottom: 16px;">📱</div>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 16px; opacity: 0.7; display: block;">
+              <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+              <path d="M12 18h.01"/>
+            </svg>
             <h3 style="color: var(--text-primary); font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 8px;">
               Bienvenido al Menú Digital
             </h3>
             <p style="font-size: 0.95rem; max-width: 440px; margin: 0 auto; line-height: 1.5;">
-              Por favor escanea el código QR asignado a tu mesa para consultar los platillos disponibles y ordenar directamente.
+              Escanea el código QR de tu mesa para consultar los platillos disponibles y realizar tu pedido.
             </p>
           </div>
         `;
@@ -134,7 +137,10 @@ const App = (() => {
         if (menuContentEl) {
           menuContentEl.innerHTML = `
             <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-              <div style="font-size: 3rem; margin-bottom: 16px;">🍽️</div>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 16px; opacity: 0.7; display: block;">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
               <h3 style="color: var(--text-primary); font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 8px;">
                 Menú en preparación
               </h3>
@@ -231,18 +237,7 @@ const App = (() => {
       btn.className = `category-tab-btn ${cat === activeCategory ? 'active' : ''}`;
       btn.dataset.category = cat;
 
-      // Iconos representativos según categoría
-      let icon = '🍽️';
-      const c = cat.toLowerCase();
-      if (c.includes('todos')) icon = '✨';
-      else if (c.includes('entrada') || c.includes('tapa')) icon = '🥗';
-      else if (c.includes('fuerte') || c.includes('carne') || c.includes('corte') || c.includes('especialidad')) icon = '🥩';
-      else if (c.includes('hamburguesa') || c.includes('rapida')) icon = '🍔';
-      else if (c.includes('postre') || c.includes('dulce')) icon = '🍰';
-      else if (c.includes('bebida') || c.includes('cafe') || c.includes('coctel')) icon = '☕';
-      else if (c.includes('pizza') || c.includes('pasta')) icon = '🍕';
-
-      btn.innerHTML = `<span>${icon}</span><span>${escapeHtml(cat)}</span>`;
+      btn.innerHTML = `<span>${escapeHtml(cat)}</span>`;
 
       btn.addEventListener('click', () => {
         selectCategory(cat);
@@ -308,7 +303,10 @@ const App = (() => {
     if (filtered.length === 0) {
       menuContentEl.innerHTML = `
         <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-          <div style="font-size: 3rem; margin-bottom: 12px;">🔍</div>
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px; opacity: 0.7; display: block;">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
           <h3 style="color: var(--text-primary); font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 6px;">
             No encontramos platillos para "${escapeHtml(searchTerm)}"
           </h3>
@@ -381,7 +379,7 @@ const App = (() => {
           ? `<button type="button" class="btn-dish-action" disabled>No disponible</button>`
           : hasModifiers
             ? `<button type="button" class="btn-dish-action btn-customize" data-action="customize">
-                 <span>⚙️ Personalizar</span>
+                 <span>Personalizar</span>
                </button>`
             : `<button type="button" class="btn-dish-action btn-direct-add" data-action="add" title="Agregar a la orden">
                  <span>+ Agregar</span>
@@ -396,7 +394,7 @@ const App = (() => {
           </div>
           <div class="dish-details">
             <h3 class="dish-name">${escapeHtml(dish.name)}</h3>
-            <p class="dish-desc">${escapeHtml(dish.description || 'Elaborado artesanalmente con ingredientes selectos.')}</p>
+            <p class="dish-desc">${escapeHtml(dish.description || '')}</p>
             <div class="dish-footer">
               <div class="dish-price-wrap">
                 <span class="dish-price-label">Precio</span>
@@ -557,7 +555,11 @@ const App = (() => {
     if (menuContentEl) {
       menuContentEl.innerHTML = `
         <div style="text-align: center; padding: 60px 20px; color: var(--color-danger);">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">⚠️</div>
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px; opacity: 0.9; stroke: var(--color-danger); display: block;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
           <p style="font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">${escapeHtml(msg)}</p>
           <button type="button" class="btn-dish-action btn-customize" onclick="window.location.reload()">
             Reintentar

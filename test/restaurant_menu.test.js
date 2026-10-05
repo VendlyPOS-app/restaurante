@@ -178,8 +178,8 @@ console.log('✓ Cálculo de subtotal, propinas porcentuales y total verificado 
 console.log('\n[Grupo 5: Formateo de Pedido y Canales de Despacho]');
 
 function formatWhatsAppComanda(storeName, tableNumber, items, subtotal, tipPercent, tipAmount, total, notes) {
-  let text = `🍽️ *NUEVA ORDEN — ${storeName.toUpperCase()}*\n`;
-  text += `📍 *Ubicación:* Mesa ${tableNumber}\n`;
+  let text = `*NUEVA ORDEN — ${storeName.toUpperCase()}*\n`;
+  text += `*Ubicación:* Mesa ${tableNumber}\n`;
   text += `───────────────────────\n`;
 
   items.forEach(it => {
@@ -201,7 +201,7 @@ function formatWhatsAppComanda(storeName, tableNumber, items, subtotal, tipPerce
   }
   text += `*TOTAL ESTIMADO: $${total.toFixed(2)}*\n\n`;
   if (notes) {
-    text += `📝 *Instrucciones generales:* ${notes}\n`;
+    text += `*Instrucciones:* ${notes}\n`;
   }
   return text;
 }

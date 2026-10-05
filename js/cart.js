@@ -229,7 +229,8 @@ const Cart = (() => {
     if (comandaBarTotal) comandaBarTotal.textContent = `${sym}${subtotal.toFixed(2)}`;
     if (comandaBarSubtitle) {
       const mesa = window.VendlyStore?.tableNumber || 'En Salón';
-      comandaBarSubtitle.textContent = `📍 ${mesa} • ${totalCount} ${totalCount === 1 ? 'platillo' : 'platillos'}`;
+      const mesaClean = mesa.toLowerCase().startsWith('mesa') ? mesa : `Mesa ${mesa}`;
+      comandaBarSubtitle.textContent = `${mesaClean} • ${totalCount} ${totalCount === 1 ? 'platillo' : 'platillos'}`;
     }
 
     // 2. Si el drawer está visible, actualizar su contenido
@@ -248,7 +249,7 @@ const Cart = (() => {
     const sym = window.VendlyStore?.currencySymbol || '$';
     const mesaRaw = window.VendlyStore?.tableNumber || 'Mesa no asignada';
     const mesaClean = mesaRaw.toLowerCase().startsWith('mesa') ? mesaRaw : `Mesa ${mesaRaw}`;
-    if (drawerTableTag) drawerTableTag.textContent = `📍 ${mesaClean}`;
+    if (drawerTableTag) drawerTableTag.textContent = mesaClean;
 
     if (items.length === 0) {
       drawerItemsContainer.innerHTML = `
@@ -396,7 +397,7 @@ const Cart = (() => {
       if (btnSubmitKitchen) {
         btnSubmitKitchen.disabled = false;
         btnSubmitKitchen.innerHTML = `
-          <span>🍽️ Enviar Pedido a Cocina</span>
+          <span>Enviar Pedido a Cocina</span>
         `;
       }
     }
@@ -413,10 +414,10 @@ const Cart = (() => {
     const mesa = window.VendlyStore?.tableNumber || 'Mesa no asignada';
     const sym = window.VendlyStore?.currencySymbol || '$';
 
-    let text = `🍽️ *NUEVA ORDEN — ${storeName.toUpperCase()}*\n`;
-    text += `📍 *Ubicación:* Mesa ${mesa}\n`;
+    let text = `*NUEVA ORDEN — ${storeName.toUpperCase()}*\n`;
+    text += `*Ubicación:* Mesa ${mesa}\n`;
     if (customerNameInput && customerNameInput.value.trim()) {
-      text += `👤 *Cliente:* ${customerNameInput.value.trim()}\n`;
+      text += `*Cliente:* ${customerNameInput.value.trim()}\n`;
     }
     text += `───────────────────────\n`;
 
@@ -441,9 +442,9 @@ const Cart = (() => {
     text += `*TOTAL ESTIMADO: ${sym}${getTotal().toFixed(2)}*\n\n`;
 
     if (tableNotesInput && tableNotesInput.value.trim()) {
-      text += `📝 *Instrucciones generales:* ${tableNotesInput.value.trim()}\n`;
+      text += `*Instrucciones:* ${tableNotesInput.value.trim()}\n`;
     }
-    text += `_Pedido generado desde el Menú Digital VendlyPOS_`;
+    text += `_Pedido registrado desde Menú Digital VendlyPOS_`;
 
     const cleanPhone = phone.replace(/[^0-9]/g, '');
     const waUrl = cleanPhone

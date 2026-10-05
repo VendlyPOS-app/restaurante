@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#120700" />
-  <meta name="description" content="Menú digital gastronómico interactivo con pedidos directos a cocina para restaurantes de alto nivel. Potenciado por VendlyPOS." />
+  <meta name="description" content="Menú digital interactivo con pedidos directos a cocina. Potenciado por VendlyPOS." />
   <title>Menú Digital | VendlyPOS</title>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Menú Digital | VendlyPOS" />
-  <meta property="og:description" content="Explora nuestra carta gastronómica de autor, personaliza tus platillos y ordena directamente desde tu mesa." />
+  <meta property="og:description" content="Consulta el menú, personaliza tus platillos y ordena directamente desde tu mesa." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/img/logo-vendlypos.svg" />
 
@@ -38,7 +38,7 @@
         <div class="hero-top-row">
           <div class="brand-badge">
             <img class="brand-logo-img" src="assets/img/logo-vendlypos.svg" alt="VendlyPOS" />
-            <span class="brand-badge-text">VENDLYPOS GOURMET</span>
+            <span class="brand-badge-text">VENDLYPOS</span>
           </div>
 
           <!-- Píldora de Mesa Asignada (Clic abre selector) -->
@@ -68,7 +68,7 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" class="search-input" id="menu-search-input" placeholder="Buscar cortes, hamburguesas, bebidas, postres..." autocomplete="off" />
+        <input type="text" class="search-input" id="menu-search-input" placeholder="Buscar platillos, bebidas, postres..." autocomplete="off" />
         <button type="button" class="search-clear-btn" id="search-clear-btn" title="Limpiar búsqueda">✕</button>
       </div>
     </div>
@@ -79,7 +79,7 @@
     <nav class="sticky-tabs-container">
       <div class="categories-scroll" id="categories-scroll">
         <!-- Renderizado dinámicamente por app.js -->
-        <button type="button" class="category-tab-btn active"><span>✨</span><span>Todos</span></button>
+        <button type="button" class="category-tab-btn active"><span>Todos</span></button>
       </div>
     </nav>
 
@@ -100,12 +100,14 @@
       <div class="comanda-badge-count" id="comanda-badge-count">0</div>
       <div class="comanda-bar-info">
         <span class="comanda-bar-title">Ver Mi Pedido</span>
-        <span class="comanda-bar-subtitle" id="comanda-bar-subtitle">📍 Mesa 01 • 0 platillos</span>
+        <span class="comanda-bar-subtitle" id="comanda-bar-subtitle">Mesa 01 • 0 platillos</span>
       </div>
     </div>
     <div class="comanda-bar-right">
       <span class="comanda-bar-total" id="comanda-bar-total">$0.00</span>
-      <div class="comanda-bar-arrow">➜</div>
+      <div class="comanda-bar-arrow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
     </div>
   </aside>
 
@@ -117,7 +119,7 @@
       <header class="drawer-header">
         <div class="drawer-title-group">
           <h2 class="drawer-title">Tu Pedido</h2>
-          <span class="drawer-table-tag" id="drawer-table-tag">📍 Mesa 01</span>
+          <span class="drawer-table-tag" id="drawer-table-tag">Mesa 01</span>
         </div>
         <button type="button" class="btn-close-drawer" id="btn-close-drawer" title="Cerrar pedido">✕</button>
       </header>
@@ -168,10 +170,10 @@
       <!-- Acciones de Despacho -->
       <footer class="drawer-footer">
         <button type="button" class="btn-primary-action" id="btn-submit-kitchen">
-          <span>🍽️ Enviar Pedido a Cocina</span>
+          <span>Enviar Pedido a Cocina</span>
         </button>
         <button type="button" class="btn-whatsapp-action" id="btn-submit-whatsapp">
-          <span>📲 Enviar Pedido por WhatsApp</span>
+          <span>Enviar Pedido por WhatsApp</span>
         </button>
       </footer>
     </div>
