@@ -37,7 +37,7 @@ const App = (() => {
    */
   function parseUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    const storeId = params.get('tienda') || params.get('store') || params.get('tienda_id') || '';
+    const storeId = params.get('tienda') || params.get('store') || params.get('tienda_id') || 'rincon-sabor';
     const tableParam = params.get('mesa') || params.get('table') || params.get('m') || '01';
 
     return {
