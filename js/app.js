@@ -361,22 +361,34 @@ const App = (() => {
 
       dishes.forEach(dish => {
         const hasModifiers = Array.isArray(dish.modifier_groups) && dish.modifier_groups.length > 0;
-        const isSoldOut = Boolean(dish.is_sold_out);
+        const isSoldOutToday = Boolean(dish.is_sold_out_today);
+        const isSoldOut = Boolean(dish.is_sold_out || isSoldOutToday);
 
         const card = document.createElement('article');
         card.className = `dish-card ${isSoldOut ? 'sold-out' : ''}`;
         card.id = `dish-card-${dish.id}`;
 
-        let badgeHtml = '';
+        let leftBadgesHtml = '';
         if (dish.badge) {
-          badgeHtml = `<span class="dish-badge">${escapeHtml(dish.badge)}</span>`;
+          leftBadgesHtml += `<span class="dish-badge">${escapeHtml(dish.badge)}</span>`;
         }
-        if (isSoldOut) {
-          badgeHtml += `<span class="dish-sold-out-badge">Agotado</span>`;
+
+        const compPrice = parseFloat(dish.compare_at_price || dish.web_compare_at_price || 0);
+        const hasDiscount = compPrice > dish.price;
+        if (hasDiscount) {
+          const discountPct = Math.round(((compPrice - dish.price) / compPrice) * 100);
+          leftBadgesHtml += `<span class="dish-badge dish-discount-badge">-${discountPct}%</span>`;
+        }
+
+        let soldOutBadgeHtml = '';
+        if (isSoldOutToday) {
+          soldOutBadgeHtml = `<span class="dish-sold-out-badge">Agotado por hoy</span>`;
+        } else if (isSoldOut) {
+          soldOutBadgeHtml = `<span class="dish-sold-out-badge">Agotado</span>`;
         }
 
         const actionBtnHtml = isSoldOut
-          ? `<button type="button" class="btn-dish-action" disabled>No disponible</button>`
+          ? `<button type="button" class="btn-dish-action" disabled>${isSoldOutToday ? 'Agotado por hoy' : 'No disponible'}</button>`
           : hasModifiers
             ? `<button type="button" class="btn-dish-action btn-customize" data-action="customize">
                  <span>Personalizar</span>
@@ -385,11 +397,19 @@ const App = (() => {
                  <span>+ Agregar</span>
                </button>`;
 
+        const priceHtml = hasDiscount
+          ? `<div class="dish-price-row">
+               <span class="dish-price-compare">${sym}${compPrice.toFixed(2)}</span>
+               <span class="dish-price">${sym}${dish.price.toFixed(2)}</span>
+             </div>`
+          : `<span class="dish-price">${sym}${dish.price.toFixed(2)}</span>`;
+
         const imgSrc = (dish.image_url && dish.image_url.trim()) ? dish.image_url.trim() : 'assets/img/placeholder-dish.svg';
 
         card.innerHTML = `
           <div class="dish-img-wrap">
-            ${badgeHtml}
+            ${leftBadgesHtml ? `<div class="dish-badges-left">${leftBadgesHtml}</div>` : ''}
+            ${soldOutBadgeHtml}
             <img class="dish-img" src="${imgSrc}" alt="${escapeHtml(dish.name)}" loading="lazy" onerror="this.src='assets/img/placeholder-dish.svg'" />
           </div>
           <div class="dish-details">
@@ -398,7 +418,7 @@ const App = (() => {
             <div class="dish-footer">
               <div class="dish-price-wrap">
                 <span class="dish-price-label">Precio</span>
-                <span class="dish-price">${sym}${dish.price.toFixed(2)}</span>
+                ${priceHtml}
               </div>
               <div class="dish-action-wrap">
                 ${actionBtnHtml}

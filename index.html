@@ -190,7 +190,10 @@
         <div class="sheet-hero-info">
           <span class="sheet-dish-category" id="sheet-dish-category">Especialidad</span>
           <h2 class="sheet-dish-title" id="sheet-dish-title">Personalizar Platillo</h2>
-          <span class="sheet-dish-base-price" id="sheet-dish-base-price">$0.00</span>
+          <div class="sheet-dish-price-wrap">
+            <span class="sheet-dish-compare-price" id="sheet-dish-compare-price" style="display: none;">$0.00</span>
+            <span class="sheet-dish-base-price" id="sheet-dish-base-price">$0.00</span>
+          </div>
         </div>
         <button type="button" class="btn-close-sheet" id="btn-close-modifiers" title="Cerrar personalización">✕</button>
       </header>
@@ -200,7 +203,7 @@
         <div id="sheet-groups-container" style="display: flex; flex-direction: column; gap: 16px;"></div>
 
         <!-- Instrucciones especiales del platillo -->
-        <div class="sheet-notes-section">
+        <div class="sheet-notes-section" id="sheet-notes-section">
           <label class="sheet-notes-label" for="sheet-notes-input">Indicaciones para la Preparación (Opcional)</label>
           <textarea class="sheet-notes-textarea" id="sheet-notes-input" placeholder="Indicaciones para cocina..."></textarea>
         </div>

@@ -95,6 +95,20 @@
   line-height: 1.2;
 }
 
+.sheet-dish-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sheet-dish-compare-price {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
 .sheet-dish-base-price {
   font-size: 1rem;
   font-weight: 800;

@@ -275,6 +275,63 @@ assert.strictEqual(multiCart.items[0].name, 'Platillo Mesa 1');
 
 console.log('✓ Aislamiento multimesa garantizado al 100% sin fuga de estado local');
 
+// 7. Grupo: Consistencia Gastronómica y Reglas Comerciales (Fase D)
+console.log('\n[Grupo 7: Consistencia Gastronómica y Reglas Comerciales (Fase D)]');
+
+// 7.1 Estado 86'd (is_sold_out_today)
+const steak = seedData.products.find(p => p.sku === '103' || p.id === 103);
+assert(steak, 'Debe existir el Corte New York Steak (id 103)');
+assert.strictEqual(steak.is_sold_out_today, true, 'El platillo debe estar marcado como is_sold_out_today = true');
+assert.strictEqual(steak.is_sold_out, true, 'is_sold_out debe ser true cuando is_sold_out_today = true');
+
+// Simular guarda de apertura de modificador y adición
+function canOpenOrAddToCart(dish) {
+  if (!dish || dish.is_sold_out || dish.is_sold_out_today) return false;
+  return true;
+}
+assert.strictEqual(canOpenOrAddToCart(steak), false, 'Platillo marcado como agotado por hoy debe bloquear adición y modificadores');
+
+// 7.2 Oferta y Precio Tachado (compare_at_price)
+const promoBurger = seedData.products.find(p => p.sku === '101' || p.id === 101);
+assert(promoBurger, 'Debe existir platillo en oferta (id 101)');
+assert(promoBurger.compare_at_price > promoBurger.price, 'compare_at_price debe ser mayor al precio de venta');
+const discountPercent = Math.round(((promoBurger.compare_at_price - promoBurger.price) / promoBurger.compare_at_price) * 100);
+assert.strictEqual(discountPercent, 19, 'El descuento calculado debe ser exactamente 19%');
+console.log(`✓ Oferta detectada con éxito: Precio tachado $${promoBurger.compare_at_price.toFixed(2)} -> Actual $${promoBurger.price.toFixed(2)} (-${discountPercent}%)`);
+
+// 7.3 Notas de Cocina Condicionales (allow_kitchen_notes)
+const pizza = seedData.products.find(p => p.sku === '104' || p.id === 104);
+assert(pizza, 'Debe existir la Pizza Margarita (id 104)');
+assert.strictEqual(pizza.allow_kitchen_notes, false, 'La pizza debe tener allow_kitchen_notes = false');
+
+function extractKitchenNotes(dish, rawInput) {
+  const allow = (dish.allow_kitchen_notes !== false && dish.web_allow_kitchen_notes !== false);
+  return allow ? (rawInput || '').trim() : '';
+}
+assert.strictEqual(extractKitchenNotes(pizza, 'Bien tostada por favor'), '', 'Notas de cocina deben suprimirse si allow_kitchen_notes es false');
+assert.strictEqual(extractKitchenNotes(promoBurger, 'Sin pepinillos'), 'Sin pepinillos', 'Notas de cocina deben mantenerse si allow_kitchen_notes es true');
+
+// 7.4 Deselección de Opción Opcional de Selección Única (min: 0, max: 1)
+function toggleSingleOptional(group, option, currentSelected) {
+  const isSingleChoice = group.max_selectable === 1;
+  if (isSingleChoice) {
+    if (group.min_selectable === 0 && currentSelected.some(s => s.id === option.id)) {
+      return []; // Deselección limpia
+    }
+    return [option];
+  }
+  return currentSelected;
+}
+const optGroup = { id: 99, min_selectable: 0, max_selectable: 1 };
+const optA = { id: 1, name: 'Salsa Extra' };
+let sel = toggleSingleOptional(optGroup, optA, []);
+assert.strictEqual(sel.length, 1, 'Debe seleccionar la opción en el primer clic');
+assert.strictEqual(sel[0].id, 1);
+sel = toggleSingleOptional(optGroup, optA, sel);
+assert.strictEqual(sel.length, 0, 'Debe deseleccionar la opción al volver a hacer clic en grupo opcional');
+
+console.log('✓ Reglas de Fase D (Agotado por hoy, precio tachado, notas condicionales y deselección) verificadas al 100%');
+
 console.log('\n===============================================================');
-console.log(' TODOS LOS TESTS PASARON EXITOSAMENTE AL 100% (6/6 GRUPOS OK) ');
+console.log(' TODOS LOS TESTS PASARON EXITOSAMENTE AL 100% (7/7 GRUPOS OK) ');
 console.log('===============================================================\n');

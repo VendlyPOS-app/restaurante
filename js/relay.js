@@ -101,6 +101,18 @@ const Relay = (() => {
               modGroups = [];
             }
 
+            const isSoldOutToday = Boolean(p.is_sold_out_today);
+            const compPrice = (p.web_compare_at_price !== undefined && p.web_compare_at_price !== null)
+              ? parseFloat(p.web_compare_at_price)
+              : ((p.compare_at_price !== undefined && p.compare_at_price !== null)
+                ? parseFloat(p.compare_at_price)
+                : null);
+            const allowKitchenNotes = (p.web_allow_kitchen_notes !== undefined)
+              ? Boolean(p.web_allow_kitchen_notes)
+              : ((p.allow_kitchen_notes !== undefined)
+                ? Boolean(p.allow_kitchen_notes)
+                : true);
+
             return {
               id: p.sku || p.id,
               sku: p.sku || p.id,
@@ -108,10 +120,15 @@ const Relay = (() => {
               category: p.category || 'General',
               description: p.description || p.web_description || '',
               price: parseFloat(p.price || 0.0),
+              compare_at_price: compPrice,
+              web_compare_at_price: compPrice,
               stock: parseInt(p.stock || 0, 10),
               image_url: p.image_url || p.imagePath || p.image || 'assets/img/placeholder-dish.svg',
               is_active: p.isActive !== false && p.is_active !== false,
-              is_sold_out: p.is_sold_out !== undefined ? Boolean(p.is_sold_out) : Boolean(p.stock !== undefined && p.stock <= 0),
+              is_sold_out: p.is_sold_out !== undefined ? Boolean(p.is_sold_out) : (isSoldOutToday || Boolean(p.stock !== undefined && p.stock <= 0)),
+              is_sold_out_today: isSoldOutToday,
+              allow_kitchen_notes: allowKitchenNotes,
+              web_allow_kitchen_notes: allowKitchenNotes,
               badge: p.badge || p.web_badge || '',
               modifier_groups: modGroups
             };

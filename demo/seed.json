@@ -33,10 +33,13 @@
       "category": "Comida Rápida",
       "description": "Pan brioche tostado con mantequilla, 150g de carne angus certificada, doble queso cheddar fundido, lechuga romana, tomate y aderezo especial de la casa.",
       "price": 6.50,
+      "compare_at_price": 8.00,
       "stock": 45,
       "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80",
       "is_active": true,
       "is_sold_out": false,
+      "is_sold_out_today": false,
+      "allow_kitchen_notes": true,
       "badge": "Más Pedido",
       "modifier_groups": [
         {
@@ -140,7 +143,9 @@
       "stock": 18,
       "image_url": "https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80",
       "is_active": true,
-      "is_sold_out": false,
+      "is_sold_out": true,
+      "is_sold_out_today": true,
+      "allow_kitchen_notes": true,
       "badge": "Corte Premium",
       "modifier_groups": [
         {
@@ -189,10 +194,13 @@
       "category": "Especialidades",
       "description": "Masa madre madurada 48 horas, salsa pomodoro de tomates San Marzano, mozzarella fior di latte, albahaca fresca y aceite de oliva virgen extra.",
       "price": 10.50,
+      "compare_at_price": 12.50,
       "stock": 25,
       "image_url": "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=800&q=80",
       "is_active": true,
       "is_sold_out": false,
+      "is_sold_out_today": false,
+      "allow_kitchen_notes": false,
       "modifier_groups": [
         {
           "id": 8,

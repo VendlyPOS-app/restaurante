@@ -15,8 +15,10 @@ const Modifiers = (() => {
   const dishThumb = document.getElementById('sheet-dish-thumb');
   const dishTitle = document.getElementById('sheet-dish-title');
   const dishBasePrice = document.getElementById('sheet-dish-base-price');
+  const dishComparePrice = document.getElementById('sheet-dish-compare-price');
   const dishCategory = document.getElementById('sheet-dish-category');
   const groupsContainer = document.getElementById('sheet-groups-container');
+  const notesSection = document.getElementById('sheet-notes-section');
   const notesTextarea = document.getElementById('sheet-notes-input');
   const qtyValEl = document.getElementById('sheet-qty-val');
   const confirmBtn = document.getElementById('btn-confirm-dish');
@@ -27,7 +29,7 @@ const Modifiers = (() => {
    * @param {Object} dish
    */
   function open(dish) {
-    if (!dish) return;
+    if (!dish || dish.is_sold_out || dish.is_sold_out_today) return;
 
     activeDish = dish;
     selectedByGroup = {};
@@ -50,9 +52,26 @@ const Modifiers = (() => {
     }
     if (dishTitle) dishTitle.textContent = dish.name;
     if (dishCategory) dishCategory.textContent = dish.category || '';
+    
+    // Precio base y precio tachado si aplica descuento
+    const sym = window.VendlyStore?.currencySymbol || '$';
     if (dishBasePrice) {
-      const sym = window.VendlyStore?.currencySymbol || '$';
       dishBasePrice.textContent = `${sym}${dish.price.toFixed(2)}`;
+    }
+    const compPrice = parseFloat(dish.compare_at_price || dish.web_compare_at_price || 0);
+    if (dishComparePrice) {
+      if (compPrice > dish.price) {
+        dishComparePrice.textContent = `${sym}${compPrice.toFixed(2)}`;
+        dishComparePrice.style.display = 'inline';
+      } else {
+        dishComparePrice.style.display = 'none';
+      }
+    }
+
+    // Interruptor de notas de cocina
+    const allowKitchenNotes = (dish.allow_kitchen_notes !== false && dish.web_allow_kitchen_notes !== false);
+    if (notesSection) {
+      notesSection.style.display = allowKitchenNotes ? '' : 'none';
     }
     if (notesTextarea) notesTextarea.value = '';
     if (qtyValEl) qtyValEl.textContent = '1';
@@ -78,7 +97,7 @@ const Modifiers = (() => {
   }
 
   /**
-   * Renderiza los grupos y opciones de modificadores
+   * Renderiza los grupos y opciones de modificadores respetando las reglas comerciales
    */
   function renderGroups() {
     if (!groupsContainer) return;
@@ -104,24 +123,33 @@ const Modifiers = (() => {
       groupCard.className = `mod-group-card ${isRequired && !isSatisfied ? 'has-error' : ''}`;
       groupCard.id = `mod-group-${group.id}`;
 
+      // Redacción comercial según reglas de negocio
+      let metaText = '';
       let badgeHtml = '';
+
       if (isRequired) {
-        badgeHtml = `<span class="mod-badge required ${isSatisfied ? 'satisfied' : ''}">
-          ${isSatisfied ? 'Listo' : `Obligatorio (elige ${group.min_selectable})`}
-        </span>`;
+        if (isSingleChoice) {
+          metaText = 'Obligatorio • Selecciona 1 opción';
+          badgeHtml = `<span class="mod-badge required ${isSatisfied ? 'satisfied' : ''}">${isSatisfied ? 'Listo' : 'Obligatorio'}</span>`;
+        } else {
+          metaText = `Obligatorio • Elige al menos ${group.min_selectable} (máx. ${group.max_selectable})`;
+          badgeHtml = `<span class="mod-badge required ${isSatisfied ? 'satisfied' : ''}">${isSatisfied ? 'Listo' : `Obligatorio (elige ${group.min_selectable})`}</span>`;
+        }
       } else {
-        badgeHtml = `<span class="mod-badge optional">
-          Opcional (hasta ${group.max_selectable})
-        </span>`;
+        if (isSingleChoice) {
+          metaText = 'Opcional • Elige hasta 1 opción';
+          badgeHtml = `<span class="mod-badge optional">Opcional (hasta 1)</span>`;
+        } else {
+          metaText = `Opcional • Elige hasta ${group.max_selectable} opciones`;
+          badgeHtml = `<span class="mod-badge optional">Opcional (hasta ${group.max_selectable})</span>`;
+        }
       }
 
       groupCard.innerHTML = `
         <div class="mod-group-header">
           <div class="mod-group-title-wrap">
             <span class="mod-group-title">${escapeHtml(group.title)}</span>
-            <span class="mod-group-meta">
-              ${isSingleChoice ? 'Selecciona 1 opción' : `Elige hasta ${group.max_selectable} opciones`}
-            </span>
+            <span class="mod-group-meta">${metaText}</span>
           </div>
           ${badgeHtml}
         </div>
@@ -163,14 +191,19 @@ const Modifiers = (() => {
   }
 
   /**
-   * Maneja el clic sobre una opción (selección única o múltiple)
+   * Maneja el clic sobre una opción (selección única o múltiple con deselección)
    */
   function toggleOption(group, option) {
     const isSingleChoice = group.max_selectable === 1;
     let selected = selectedByGroup[group.id] || [];
 
     if (isSingleChoice) {
-      selectedByGroup[group.id] = [option];
+      // Si es opcional y ya está seleccionado, permitir deseleccionarlo al hacer clic nuevamente
+      if (group.min_selectable === 0 && selected.some(s => s.id === option.id)) {
+        selectedByGroup[group.id] = [];
+      } else {
+        selectedByGroup[group.id] = [option];
+      }
     } else {
       const existsIndex = selected.findIndex(s => s.id === option.id);
       if (existsIndex >= 0) {
@@ -228,7 +261,7 @@ const Modifiers = (() => {
   }
 
   /**
-   * Actualiza el botón de confirmación con el total dinámico
+   * Actualiza el botón de confirmación con el total dinámico en caliente
    */
   function updateFooter() {
     const unitPrice = calculateItemUnitPrice();
@@ -287,7 +320,8 @@ const Modifiers = (() => {
       });
     });
 
-    const notes = notesTextarea ? notesTextarea.value.trim() : '';
+    const allowKitchenNotes = activeDish.allow_kitchen_notes !== false && activeDish.web_allow_kitchen_notes !== false;
+    const notes = (allowKitchenNotes && notesTextarea) ? notesTextarea.value.trim() : '';
 
     if (window.Cart && typeof window.Cart.addItem === 'function') {
       window.Cart.addItem(activeDish, allSelectedOptions, notes, quantity);
